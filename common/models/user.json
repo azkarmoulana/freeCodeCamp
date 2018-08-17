@@ -1,7 +1,7 @@
 {
   "name": "user",
   "base": "User",
-  "strict": true,
+  "strict": "filter",
   "idInjection": true,
   "emailVerificationRequired": false,
   "trackChanges": false,
@@ -167,6 +167,11 @@
       "description": "Camper is information security and quality assurance certified",
       "default": false
     },
+    "is2018FullStackCert": {
+      "type": "boolean",
+      "description": "Camper is full stack certified (2018)",
+      "default": false
+    },
     "completedChallenges": {
       "type": [
         {
@@ -206,6 +211,10 @@
       "type": "array",
       "default": []
     },
+    "yearsTopContributor": {
+      "type": "array",
+      "default": []
+    },
     "rand": {
       "type": "number",
       "index": true
@@ -240,19 +249,23 @@
       },
       "default": {}
     },
-    "donationEmails": [ "string" ],
+    "donationEmails": {
+      "type": [
+        "string"
+      ]
+    },
     "isDonating": {
       "type": "boolean",
-      "default": false,
-      "description": "Does the camper have an active donation"
+      "description": "Does the camper have an active donation",
+      "default": false
     }
   },
   "validations": [],
   "relations": {
     "donations": {
       "type": "hasMany",
-      "modal": "donation",
-      "foreignKey": ""
+      "foreignKey": "",
+      "modal": "donation"
     },
     "credentials": {
       "type": "hasMany",
@@ -276,6 +289,11 @@
       "options": {
         "disableInclude": true
       }
+    },
+    "articles": {
+      "type": "hasMany",
+      "model": "article",
+      "foreignKey": "externalId"
     }
   },
   "acls": [

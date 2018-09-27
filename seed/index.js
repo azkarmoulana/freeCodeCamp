@@ -7,7 +7,7 @@ const Rx = require('rx');
 const _ = require('lodash');
 const createDebugger = require('debug');
 const utils = require('../server/utils');
-const getChallenges = require('./getChallenges');
+const { getChallenges } = require('@freecodecamp/curriculum');
 const { validateChallenge } = require(
   './schema/challengeSchema'
 );
@@ -84,7 +84,7 @@ Observable.combineLatest(
           .map(function(challenge, index) {
             challenge.name = nameify(challenge.title);
 
-            challenge.dashedName = dasherize(challenge.name);
+            challenge.dashedName = dasherize(challenge.title);
 
             challenge.checksum = adler32.sum(
               Buffer(

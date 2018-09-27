@@ -15,6 +15,7 @@ export const publicUserProps = [
   'isApisMicroservicesCert',
   'isBackEndCert',
   'isCheater',
+  'isDonating',
   'is2018DataVisCert',
   'isDataVisCert',
   'isFrontEndCert',
@@ -34,7 +35,8 @@ export const publicUserProps = [
   'streak',
   'twitter',
   'username',
-  'website'
+  'website',
+  'yearsTopContributor'
 ];
 
 export const userPropsForSession = [

@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { kebabCase } from 'lodash';
+import { kebabCase, defaultTo } from 'lodash';
 import PropTypes from 'prop-types';
 import { Button } from 'react-bootstrap';
 
@@ -13,7 +13,12 @@ const jsFormPropTypes = {
   claimCert: PropTypes.func.isRequired,
   hardGoTo: PropTypes.func.isRequired,
   isCertClaimed: PropTypes.bool,
-  jsProjects: PropTypes.objectOf(PropTypes.object),
+  jsProjects: PropTypes.objectOf(
+    PropTypes.oneOfType([
+      PropTypes.arrayOf(PropTypes.object),
+      PropTypes.string
+    ])
+  ),
   projectBlockName: PropTypes.string,
   superBlock: PropTypes.string,
   username: PropTypes.string
@@ -56,6 +61,7 @@ class JSAlgoAndDSForm extends PureComponent {
       isCertClaimed
     } = this.props;
     const completeCount = Object.values(jsProjects)
+      .map(val => defaultTo(val, {}))
       .filter(challengeInfo => Object.keys(challengeInfo).length !== 0)
       .length;
 
@@ -73,7 +79,7 @@ class JSAlgoAndDSForm extends PureComponent {
                 <li className='solution-list-item'>
                   <p>{ challenge }</p>
                   {
-                    Object.keys(jsProjects[challenge]).length ?
+                    Object.keys(jsProjects[challenge] || {}).length ?
                     <div>
                       <Button
                         bsSize='lg'
@@ -84,7 +90,11 @@ class JSAlgoAndDSForm extends PureComponent {
                         { this.state[challenge] ? 'Hide' : 'Show' } Solution
                       </Button>
                     </div> :
-                    <Link to={`${jsProjectPath}${kebabCase(challenge)}`}>
+                    <Link
+                      rel='noopener noreferrer'
+                      target='_blank'
+                      to={`${jsProjectPath}${kebabCase(challenge)}`}
+                      >
                       <Button
                         bsSize='lg'
                         bsStyle='primary'

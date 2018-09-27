@@ -9,12 +9,14 @@ nav.navbar.navbar-default.navbar-static-top.nav-height
     .collapse.navbar-collapse
         ul.nav.navbar-nav.navbar-right.hamburger-dropdown
             li
-                a(href='https://learn.freecodecamp.org' target='_blank' rel='noopener') Learn
+                a(href='https://learn.freecodecamp.org' rel='noopener') Curriculum
             li
                 a(href='https://forum.freecodecamp.org', target='_blank' rel='noopener') Forum
+            li
+                a(href='/news', rel='noopener') News
             if !user
                 li
-                    a(href='/signin') Sign in
+                    a(href='/signin' onclick='gtag_report_conversion()') Sign in
             else
                 li
                   a(href='/settings') Settings

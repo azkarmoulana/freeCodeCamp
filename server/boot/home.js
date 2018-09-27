@@ -1,5 +1,5 @@
 import { defaultProfileImage } from '../../common/utils/constantStrings.json';
-import { getRandomQuote } from '../../common/app/utils/quotes';
+import { randomQuote } from '../../common/app/utils/get-words';
 import { cachedMap } from '../utils/map';
 // import NewsFeed from '../rss';
 
@@ -9,19 +9,22 @@ module.exports = function(app, done) {
   const { About } = app.models;
   const router = app.loopback.Router();
   let challengeCount = 0;
-  cachedMap(app.models)
-    .do(({ entities: { challenge } }) => {
-      challengeCount = Object.keys(challenge).length;
-    })
-    .subscribe(
-      () => {},
-      err => {throw new Error(err);},
-      () => {
-        router.get('/', addDefaultImage, index);
-        app.use(router);
-        done();
-      }
-    );
+
+  if (!process.env.SEEDING) {
+    cachedMap(app.models)
+      .do(({ entities: { challenge } }) => {
+        challengeCount = Object.keys(challenge).length;
+      })
+      .subscribe(
+        () => {},
+        err => {throw new Error(err);},
+        () => {
+          router.get('/', addDefaultImage, index);
+          app.use(router);
+          done();
+        }
+      );
+  }
 
   function addDefaultImage(req, res, next) {
     if (!req.user || req.user.picture) {
@@ -37,7 +40,7 @@ module.exports = function(app, done) {
   function index(req, res) {
     const { user } = req;
     const homePage = user ? 'userHome' : 'noUserHome';
-    const { quote, author} = getRandomQuote();
+    const { quote, author} = randomQuote();
     const title = user ?
       `Welcome, ${user.name ? user.name : 'Camper'}!` :
       'Learn to Code and Help Nonprofits';

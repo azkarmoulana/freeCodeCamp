@@ -26,7 +26,6 @@ const mapStateToProps = createSelector(
     isBackEndCert,
     isDataVisCert,
     isFullStackCert,
-    is2018FullStackCert,
     username
   }) => ({
     username,
@@ -36,14 +35,15 @@ const mapStateToProps = createSelector(
       isFrontEndLibsCert ||
       isJsAlgoDataStructCert ||
       isApisMicroservicesCert ||
-      isInfosecQaCert
+      isInfosecQaCert ||
+      isFullStackCert
     ),
     hasLegacyCert: (isFrontEndCert || isBackEndCert || isDataVisCert),
     currentCerts: [
       {
-        show: is2018FullStackCert,
+        show: isFullStackCert,
         title: 'Full Stack Certification',
-        showURL: '2018-full-stack'
+        showURL: 'full-stack'
       },
       {
         show: isRespWebDesignCert,
@@ -162,7 +162,9 @@ function Certificates({
         {
           hasLegacyCert ?
           <div>
-            <h3>Legacy Certifications</h3>
+            <br />
+            <h3 className='text-center'>Legacy Certifications</h3>
+            <br />
             {
               legacyCerts.map(renderCertShowWithUsername)
             }
